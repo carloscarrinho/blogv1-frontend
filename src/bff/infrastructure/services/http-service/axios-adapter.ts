@@ -5,20 +5,29 @@ import { HttpService } from "../../../application/contracts/http/http-service";
 
 export class AxiosAdapter implements HttpService {
   async request(options: HttpRequest): Promise<HttpResponse> {
-    await axios({
-      method: options.method,
-      url: options.uri,
-      headers: options.headers,
-      params: options.params,
-      data: options.body,
-    });
+    try {
+      const response = await axios({
+        method: options.method,
+        url: options.uri,
+        headers: options.headers,
+        params: options.params,
+        data: options.body,
+      });
 
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: {},
-    };
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {},
+      };
+    } catch (error) {
+      if (!error.response) return { statusCode: 503, body: {} };
+
+      return {
+        statusCode: error.response.status,
+        body: error.response.data,
+      };
+    }
   }
 }
