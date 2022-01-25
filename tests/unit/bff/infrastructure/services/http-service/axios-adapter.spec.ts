@@ -25,11 +25,12 @@ const makeRequest = (data?: HttpRequest): HttpRequest => ({
 // });
 
 const makeAxiosResponse = (res?: any) => ({
-  data: res?.data ?? {},
-  status: res?.status ?? 200,
-  statusText: res?.statusText ?? "any_text",
+  response: res?.response ?? { data: {}, status: 200, statusText: "Success" },
   headers: res?.headers ?? [],
   config: res?.config ?? {},
+  data: {},
+  status: 200,
+  statusText: "Success",
 });
 
 describe("Unit", () => {
@@ -53,6 +54,29 @@ describe("Unit", () => {
             params: request.params,
             data: request.body,
           });
+        });
+
+        it("Should return 400 if request is invalid", async () => {
+          // Given
+          const axiosAdapter = makeSut();
+          const request = makeRequest();
+          const axiosResponse = makeAxiosResponse({
+            response: {
+              status: 400,
+              statusText: "Bad Request",
+              data: {},
+            },
+          });
+
+          jest.mocked(axios).mockImplementationOnce(() => {
+            throw axiosResponse;
+          });
+
+          // When
+          const httpResponse = await axiosAdapter.request(request);
+
+          // Then
+          expect(httpResponse.statusCode).toBe(400);
         });
 
         it("Should return 200 if request succeeds", async () => {
