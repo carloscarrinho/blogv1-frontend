@@ -9,7 +9,15 @@
     "build": "tsc -p .",
     "pretest": "npm run build",
     "test": "jest",
-    "dev:server": "nodemon --watch 'src/' --exec 'ts-node src/bff/app.ts' -e ts"
+    "dev:server": "nodemon --watch 'src/' --exec 'ts-node src/bff/app.ts' -e ts",
+    "test:unit": "jest -c jest-unit-config.js",
+    "test:unit:watch": "jest --watch --coverage=false -c jest-unit-config.js",
+    "test:integration": "jest -c jest-integration-config.js",
+    "test:integration:watch": "jest --watch --coverage=false -c jest-integration-config.js",
+    "test:system": "jest -c jest-system-config.js",
+    "test:system:watch": "jest --watch --coverage=false -c jest-system-config.js",
+    "test:staged": "npm test -- --passWithNoTests --coverage=false --silent",
+    "test:ci": "npm test -- --coverage"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
