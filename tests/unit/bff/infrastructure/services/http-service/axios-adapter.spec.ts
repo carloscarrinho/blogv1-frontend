@@ -1,6 +1,5 @@
 import axios from "axios";
 import { HttpRequest } from "../../../../../../src/bff/application/contracts/http/http-request";
-import { HttpResponse } from "../../../../../../src/bff/application/contracts/http/http-response";
 import { HttpService } from "../../../../../../src/bff/application/contracts/http/http-service";
 import { AxiosAdapter } from "../../../../../../src/bff/infrastructure/services/http-service/axios-adapter";
 
@@ -18,19 +17,13 @@ const makeRequest = (data?: Partial<HttpRequest>): HttpRequest => ({
   body: data?.params ?? {},
 });
 
-// const makeResponse = (data?: Partial<HttpResponse>): HttpResponse => ({
-//   statusCode: data.statusCode ?? 200,
-//   headers: data.headers ?? { "Content-Type": "application/json" },
-//   body: data.body ?? {},
-// });
-
 const makeAxiosResponse = (res?: any) => ({
   response: res?.response ?? undefined,
   headers: res?.headers ?? [],
   config: res?.config ?? {},
-  data: res?.response ?? {},
-  status: res?.response ?? 503,
-  statusText: res?.response ?? undefined,
+  data: res?.data ?? {},
+  status: res?.status ?? 503,
+  statusText: res?.statusText ?? undefined,
 });
 
 describe("Unit", () => {
@@ -102,7 +95,14 @@ describe("Unit", () => {
           // Given
           const axiosAdapter = makeSut();
           const request = makeRequest();
-          const axiosResponse = makeAxiosResponse();
+          const axiosResponse = makeAxiosResponse({
+            status: 200,
+            statusText: "Success",
+            data: {
+              message: "Success",
+            },
+          });
+
           jest.mocked(axios).mockResolvedValueOnce(axiosResponse);
 
           // When
