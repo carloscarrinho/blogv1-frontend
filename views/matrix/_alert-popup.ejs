@@ -1,0 +1,9 @@
+<% if(alert.show && alert.error) { %>
+  <div class="alert alert-danger">
+    <%= alert.message %>
+  </div>
+  <% } else if (alert.show && !alert.error) { %>
+    <div class="alert alert-success">
+      <%= alert.message %>
+    </div>
+    <% } %>

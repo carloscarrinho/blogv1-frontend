@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('../_head') %> 
+</head>
+
+<body>
+  <%- include('../_header') %>
+  <main class="main">
+    <section class="articles section" id="articles">
+      <h2 class="section__title">articles</h2>
+      <span class="section__subtitle">some insights from my journey</span>
+      
+      <div class="articles__container container grid">
+        <% if(articles.length) { %>
+          <% articles.forEach(article=> { %>
+            <a class="article__card" href="/articles/<%= article.id %>">
+              <h2 class="article__card-title"><%= article.title %></h2>
+              <div class="article__card-tags">
+                <% article.tags.forEach(tag=> { %>
+                  <span class="article__card-tag">
+                    <%= tag %>
+                  </span>
+                  <% }) %>
+              </div>
+              <div class="article__card-description">
+                <p><%= article.description %></p>
+              </div>
+              <div>
+                <span class="article__card-date"><%= article.createdAt.toLocaleDateString() %></span>
+              </div>
+            </a>
+            <% }) %>
+              <% } else { %>
+                <div class="article__card">
+                  <div class="article__card-description"><p>Ops! There's no articles here </p></div>
+                </div>
+                <% } %>
+      </div>
+    </section>
+  </main>
+    <%- include('../_scripts') %>
+</body>
+
+</html>

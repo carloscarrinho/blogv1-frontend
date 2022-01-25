@@ -1,0 +1,38 @@
+{
+  "name": "blogv1-frontend-ejs",
+  "description": "Frontend to my blog page",
+  "author": "Carlos Eduardo Ferreira Carrinho <carrinhoedu@gmail.com>",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p .",
+    "pretest": "npm run build",
+    "test": "jest",
+    "dev:server": "nodemon --watch 'src/' --exec 'ts-node src/bff/app.ts' -e ts"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.4.0",
+    "@types/marked": "^4.0.1",
+    "@types/method-override": "^0.0.32",
+    "@types/supertest": "^2.0.11",
+    "husky": "^7.0.4",
+    "jest": "^27.4.5",
+    "lint-staged": "^12.2.2",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "marked": "^4.0.8",
+    "method-override": "^3.0.0",
+    "node-dependency-injection": "^2.7.1"
+  }
+}
