@@ -10,7 +10,7 @@ const makeSut = (): HttpService => {
   return new AxiosAdapter();
 };
 
-const makeRequest = (data?: HttpRequest): HttpRequest => ({
+const makeRequest = (data?: Partial<HttpRequest>): HttpRequest => ({
   method: data?.method ?? "GET",
   uri: data?.uri ?? "any_url",
   headers: data?.headers ?? { "Content-Type": "application/json" },
@@ -25,12 +25,12 @@ const makeRequest = (data?: HttpRequest): HttpRequest => ({
 // });
 
 const makeAxiosResponse = (res?: any) => ({
-  response: res?.response ?? { data: {}, status: 200, statusText: "Success" },
+  response: res?.response ?? undefined,
   headers: res?.headers ?? [],
   config: res?.config ?? {},
-  data: {},
-  status: 200,
-  statusText: "Success",
+  data: res?.response ?? {},
+  status: res?.response ?? 503,
+  statusText: res?.response ?? undefined,
 });
 
 describe("Unit", () => {
@@ -77,6 +77,25 @@ describe("Unit", () => {
 
           // Then
           expect(httpResponse.statusCode).toBe(400);
+        });
+
+        it("Should return 503 if service does not respond", async () => {
+          // Given
+          const axiosAdapter = makeSut();
+          const request = makeRequest({ uri: "" });
+          const axiosResponse = makeAxiosResponse({
+            response: undefined,
+          });
+
+          jest.mocked(axios).mockImplementationOnce(() => {
+            throw axiosResponse;
+          });
+
+          // When
+          const httpResponse = await axiosAdapter.request(request);
+
+          // Then
+          expect(httpResponse.statusCode).toBe(503);
         });
 
         it("Should return 200 if request succeeds", async () => {
