@@ -15,11 +15,9 @@ export class AxiosAdapter implements HttpService {
       });
 
       return {
-        statusCode: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: {},
+        statusCode: response.status,
+        headers: response.headers,
+        body: response.data,
       };
     } catch (error) {
       if (!error.response) return { statusCode: 503, body: {} };
