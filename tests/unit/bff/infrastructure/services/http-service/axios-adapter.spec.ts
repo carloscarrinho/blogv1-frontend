@@ -36,6 +36,25 @@ describe("Unit", () => {
   describe("BFF Infrastructure", () => {
     describe("Services: HttpService", () => {
       describe("AxiosAdapter.request()", () => {
+        it("Should call axios with provided data", async () => {
+          // Given
+          const axiosAdapter = makeSut();
+          const request = makeRequest();
+          const axiosSpy = jest.mocked(axios);
+
+          // When
+          await axiosAdapter.request(request);
+
+          // Then
+          expect(axiosSpy).toHaveBeenCalledWith({
+            method: request.method,
+            url: request.uri,
+            headers: request.headers,
+            params: request.params,
+            data: request.body,
+          });
+        });
+
         it("Should return 200 if request succeeds", async () => {
           // Given
           const axiosAdapter = makeSut();
