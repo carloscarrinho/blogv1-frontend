@@ -9,6 +9,17 @@ const makeSut = ({ request }: { request?: Function }): BlogService => {
   return new BlogService(httpService);
 };
 
+const makeArticle = () => ({
+  id: "any_id",
+  url: "any-title",
+  title: "Any Title",
+  description: "Any Description",
+  content: "Any Content",
+  tags: ["tag1", "tag2"],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+});
+
 describe("Unit", () => {
   describe("Infrastructure Services", () => {
     describe("Blog Service", () => {
@@ -41,6 +52,23 @@ describe("Unit", () => {
 
           // Then
           expect(result).toEqual([]);
+        });
+
+        it("Should return an array with articles if response statusCode is 200", async () => {
+          // Given
+          const articles = [makeArticle()];
+          const blogService = makeSut({
+            request: jest.fn().mockResolvedValueOnce({
+              statusCode: 200,
+              body: articles,
+            }),
+          });
+
+          // When
+          const result = await blogService.getArticles();
+
+          // Then
+          expect(result).toEqual(articles);
         });
       });
     });
