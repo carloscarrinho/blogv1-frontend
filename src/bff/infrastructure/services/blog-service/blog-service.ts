@@ -6,7 +6,7 @@ export class BlogService {
   async getArticles(): Promise<object[]> {
     const response = await this.httpService.request({
       method: "GET",
-      uri: "http://localhost:3333/articles",
+      uri: `${process.env.BLOG_API_URL}/articles`,
       headers: { "Content-Type": "application/json" },
     });
 

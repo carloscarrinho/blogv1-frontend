@@ -30,7 +30,7 @@ describe("Unit", () => {
           const blogService = makeSut(dependencies);
           const httpRequest = {
             method: "GET",
-            uri: "http://localhost:3333/articles",
+            uri: `${process.env.PORT}/articles`,
             headers: { "Content-Type": "application/json" },
           };
 
