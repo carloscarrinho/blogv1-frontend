@@ -1,0 +1,16 @@
+version: "3"
+services:
+  application:
+    container_name: blog-frontend-container
+    build: .
+    image: app-blog-frontend
+    restart: always
+    volumes:
+      - "./dist:/usr/app/dist"
+      - "./views:/usr/app/views"
+    command: npm start
+    environment:
+      BLOG_API_URL: http://localhost:3333
+      PORT: 3000
+    ports:
+      - "3000:3000"
